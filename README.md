@@ -1,4 +1,4 @@
-# Deploy-Keycloak
+# Deploy-Agones
 Manifests to deploy game servers locally or inside the LKE cluster
 
 ## Usage
