@@ -22,7 +22,7 @@ kubectl apply -f .\simple-game-server.yaml
 ```
 This will generate a pod with the server and the agones side-car. It also creates a GameServer CRD.
 
-If you want to deploy your game server on your local cluster (e.g. a minikube with docker desktop), your need to add a load balancer.
+If you want to deploy your game server on your local cluster (e.g. a minikube with docker desktop), your need to add a load balancer:
 ```console
 kubectl apply -f .\load-balancer.yaml
 ```
