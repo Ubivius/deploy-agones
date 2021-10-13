@@ -1,0 +1,64 @@
+# Copyright 2020 Google LLC All Rights Reserved.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+apiVersion: "agones.dev/v1"
+kind: Fleet
+metadata:
+  name: simple-game-server
+spec:
+  replicas: 1
+  template:
+    spec:
+      ports:
+      - name: client
+        portPolicy: Static
+        containerPort: 9150
+        hostPort: 9150
+        protocol: UDP
+      - name: control
+        portPolicy: Static
+        containerPort: 9151
+        hostPort: 9151
+        protocol: TCP
+      health:
+        # Disable health checking. defaults to false, but can be set to true
+        disabled: false
+        # Number of seconds after the container has started before health check is initiated. Defaults to 5 seconds
+        initialDelaySeconds: 10
+        # If the `Health()` function doesn't get called at least once every period (seconds), then
+        # the game server is not healthy. Defaults to 5
+        periodSeconds: 30
+        # Minimum consecutive failures for the health probe to be considered failed after having succeeded.
+        # Defaults to 3. Minimum value is 1
+        failureThreshold: 3
+      template:
+        spec:
+          containers:
+          - name: simple-game-server
+            image: ubiviushub/ubivius-game:0.0.0
+            imagePullPolicy: Always
+            readinessProbe:
+              httpGet:
+                scheme: HTTP
+                path: /readiness
+                port: 9100
+              initialDelaySeconds: 10
+              periodSeconds: 5
+            livenessProbe:
+              httpGet:
+                scheme: HTTP
+                path: /liveness
+                port: 9100
+              initialDelaySeconds: 10
+              periodSeconds: 5
