@@ -6,4 +6,4 @@ metadata:
 rules:
 - apiGroups: ["agones.dev"] # "" indicates the core API group
   resources: ["gameservers"]
-  verbs: ["get", "watch", "list"]
+  verbs: ["get", "watch", "list", "create", "update", "patch", "delete"]
