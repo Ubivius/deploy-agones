@@ -15,7 +15,7 @@
 apiVersion: "agones.dev/v1"
 kind: Fleet
 metadata:
-  name: simple-game-server
+  name: ubivius-game
 spec:
   replicas: 1
   template:
@@ -45,7 +45,7 @@ spec:
       template:
         spec:
           containers:
-          - name: simple-game-server
+          - name: space-jam
             image: ubiviushub/ubivius-game:0.0.0
             imagePullPolicy: Always
             readinessProbe:
