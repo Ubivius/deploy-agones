@@ -35,6 +35,9 @@ Inside the LKE cluser:
 kubectl apply -f .\fleet.yaml
 ```
 
+This will create a Fleet CRD, a GameServer CRD ans a pod with the game server and the agones-sidecar.
+With the Fleet, if you delete the pod, it will automatically recreacte a new pod.
+
 ## Add Role to edit game servers
 
 Inside the LKE cluster:
