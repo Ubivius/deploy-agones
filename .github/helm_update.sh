@@ -1,4 +1,5 @@
 #!/bin/sh
+
 case $1 in
     agones)
         helm upgrade agones --install --version 1.17.0 --namespace agones-system --create-namespace agones/agones
