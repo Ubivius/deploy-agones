@@ -11,8 +11,8 @@ helm repo add elastic https://helm.elastic.co
 helm repo add bitnami https://charts.bitnami.com/bitnami
 # For Traefik
 helm repo add traefik https://helm.traefik.io/traefik
-# For Pebble
-helm repo add jupyterhub https://jupyterhub.github.io/helm-chart
+# For Cert-Manager
+helm repo add jetstack https://charts.jetstack.io
 # For Agones
 helm repo add agones https://agones.dev/chart/stable
 helm repo update
