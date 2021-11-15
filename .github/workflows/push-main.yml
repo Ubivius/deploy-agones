@@ -1,0 +1,34 @@
+name: CI for Merge on master/main
+
+on:
+  push:
+    tags:
+      - v*
+    branches: [ master, main ]
+
+env:
+  GKE_USER: ${{ secrets.GKE_SERVICEACCOUNT_EMAIL }}
+  GKE_JSON: ${{ secrets.GKE_SERVICEACCOUNT_JSONKEY }}
+  GKE_CLUSTER_NAME: ${{ secrets.GKE_PROD_CLUSTER_NAME }}
+  GKE_CLUSTER_ZONE: ${{ secrets.GKE_PROD_CLUSTER_ZONE }}
+  GKE_CLUSTER_PROJECT: ${{ secrets.GKE_PROD_CLUSTER_PROJECT }}
+  LKE_SERVICEACCOUNT_TOKEN: ${{ secrets.LKE_SERVICEACCOUNT_TOKEN }}
+  LKE_CLUSTERID: ${{ secrets.LKE_PROD_CLUSTERID }}
+
+jobs:
+  deploy-tooling-lke:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Setup helm/kubectl env
+        run: |
+          chmod 700 .github/tools_install.sh
+          ./.github/tools_install.sh
+          curl -H "Authorization: Bearer ${{ env.LKE_SERVICEACCOUNT_TOKEN }}" https://api.linode.com/v4/lke/clusters/${{ env.LKE_CLUSTERID }}/kubeconfig | jq '.kubeconfig' | sed 's/["]//g' | base64 --decode > ~/.kube/config
+
+      - name: Push with valuefile
+        run: |
+          IN=$(echo ${GITHUB_REPOSITORY})
+          NAME=${IN#"Ubivius/deploy-"}
+          chmod 700 .github/helm_update.sh
+          ./.github/helm_update.sh $NAME
