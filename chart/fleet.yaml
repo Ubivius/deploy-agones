@@ -17,7 +17,12 @@ kind: Fleet
 metadata:
   name: ubivius-game
 spec:
-  replicas: 1
+  replicas: 3
+  strategy:
+    rollingUpdate:
+        maxSurge: 25%
+        maxUnavailable: 25%
+    type: RollingUpdate
   template:
     spec:
       ports:
