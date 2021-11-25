@@ -38,4 +38,17 @@ kubectl apply -f .\fleet.yaml
 This will create a Fleet CRD, a GameServer CRD ans a pod with the game server and the agones-sidecar.
 With the Fleet, if you delete the pod, it will automatically recreacte a new pod.
 
+## Add Role to edit game servers
+
+Inside the LKE cluster:
+```console
+kubectl apply -f .\gameservers-role.yaml
+```
+This will add the role to get, watch, list, create, update, patch and delete game servers.
+
+Then create the Role Binding
+```console
+kubectl create rolebinding gameservers-reader-pod --role=gameservers-reader --serviceaccount=default:default
+```
+
 For more information visit https://agones.dev/site/.
